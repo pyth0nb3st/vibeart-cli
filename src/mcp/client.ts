@@ -35,7 +35,12 @@ function normalizeBaseUrl(baseUrl: string): string {
 }
 
 function mcpEndpoint(baseUrl: string): string {
-  return `${normalizeBaseUrl(baseUrl)}/api/mcp`
+  const normalized = normalizeBaseUrl(baseUrl)
+  if (normalized.endsWith('/api/mcp')) {
+    return normalized
+  }
+
+  return `${normalized}/api/mcp`
 }
 
 async function readJson(response: Response): Promise<unknown> {
@@ -92,6 +97,7 @@ export async function callTool<TResult = unknown>(options: CallToolOptions): Pro
   const timeoutMs = options.timeoutMs ?? 60_000
   const endpoint = mcpEndpoint(options.baseUrl)
   const requestId = randomUUID()
+  const sessionId = randomUUID()
 
   const controller = new AbortController()
   const timeout = setTimeout(() => {
@@ -120,8 +126,10 @@ export async function callTool<TResult = unknown>(options: CallToolOptions): Pro
     response = await fetchImpl(endpoint, {
       method: 'POST',
       headers: {
+        accept: 'application/json, text/event-stream',
         'content-type': 'application/json',
         authorization: `Bearer ${options.apiKey}`,
+        'mcp-session-id': sessionId,
       },
       body: JSON.stringify(body),
       signal: controller.signal,

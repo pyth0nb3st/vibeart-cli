@@ -29,7 +29,8 @@ afterEach(() => {
 
 describe('callTool', () => {
   it('returns structured result on success', async () => {
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(makeSuccessResponse({ ok: true })))
+    const fetchMock = vi.fn().mockResolvedValue(makeSuccessResponse({ ok: true }))
+    vi.stubGlobal('fetch', fetchMock)
 
     const result = await callTool({
       baseUrl: 'https://api.example.com',
@@ -40,6 +41,28 @@ describe('callTool', () => {
 
     expect(result.success).toBe(true)
     expect(result.result).toEqual({ ok: true })
+
+    const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit]
+    const headers = init.headers as Record<string, string>
+    expect(url).toBe('https://api.example.com/api/mcp')
+    expect(headers.accept).toBe('application/json, text/event-stream')
+    expect(typeof headers['mcp-session-id']).toBe('string')
+    expect(headers['mcp-session-id'].length).toBeGreaterThan(0)
+  })
+
+  it('accepts base URL that already includes /api/mcp', async () => {
+    const fetchMock = vi.fn().mockResolvedValue(makeSuccessResponse({ ok: true }))
+    vi.stubGlobal('fetch', fetchMock)
+
+    await callTool({
+      baseUrl: 'https://api.example.com/api/mcp',
+      apiKey: 'vk_test',
+      toolName: 'list_models',
+      input: {},
+    })
+
+    const [url] = fetchMock.mock.calls[0] as [string, RequestInit]
+    expect(url).toBe('https://api.example.com/api/mcp')
   })
 
   it('maps 401 response to auth error', async () => {

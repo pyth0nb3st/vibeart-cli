@@ -32,6 +32,11 @@ bunx vibeart-cli --help
 vibeart init --base-url https://vibeart.app --api-key vk_xxx --non-interactive
 ```
 
+`--base-url` accepts either:
+
+- `https://vibeart.app`
+- `https://vibeart.app/api/mcp`
+
 2. Verify auth and config resolution:
 
 ```bash

@@ -42,6 +42,11 @@ export VIBEART_BASE_URL="https://vibeart.app"
 export VIBEART_API_KEY="vk_xxx"
 ```
 
+`VIBEART_BASE_URL` accepts both root and MCP endpoint forms:
+
+- `https://vibeart.app`
+- `https://vibeart.app/api/mcp`
+
 Optional local config bootstrap:
 
 ```bash

@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 
 import { Cli } from 'incur'
+import { readFileSync } from 'node:fs'
+import { fileURLToPath } from 'node:url'
 import { createAuthCommandGroup, getInitCommand } from './commands/auth'
 import { createModelsCommandGroup } from './commands/models'
 import { createSessionsCommandGroup } from './commands/sessions'
@@ -8,9 +10,24 @@ import { createProjectsCommandGroup } from './commands/projects'
 import { createImagesCommandGroup } from './commands/images'
 import { createVideoCommandGroup } from './commands/video'
 
+function resolveCliVersion(): string {
+  try {
+    const path = fileURLToPath(new URL('../package.json', import.meta.url))
+    const raw = readFileSync(path, 'utf8')
+    const parsed = JSON.parse(raw) as { version?: unknown }
+    if (typeof parsed.version === 'string' && parsed.version.trim()) {
+      return parsed.version
+    }
+  } catch {
+    // Fallback keeps CLI usable even if package metadata cannot be read.
+  }
+
+  return '0.0.0'
+}
+
 Cli.create('vibeart', {
   description: 'Vibeart CLI wrapper for MCP API.',
-  version: '0.1.0',
+  version: resolveCliVersion(),
   sync: {
     suggestions: [
       'List my Vibeart sessions',
