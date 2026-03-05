@@ -4,6 +4,12 @@ Standalone CLI wrapper for Vibeart MCP API, built with `incur`.
 
 Agent-focused guide: [README.agent.md](./README.agent.md)
 
+## Links
+
+- Website: https://vibeart.app
+- GitHub: https://github.com/pyth0nb3st/vibeart-cli
+- npm: https://www.npmjs.com/package/vibeart-cli
+
 ## Install
 
 ```bash

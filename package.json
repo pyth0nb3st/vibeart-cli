@@ -3,6 +3,14 @@
   "version": "0.1.1",
   "private": false,
   "type": "module",
+  "homepage": "https://vibeart.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pyth0nb3st/vibeart-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/pyth0nb3st/vibeart-cli/issues"
+  },
   "files": [
     "dist",
     "README.md",

@@ -2,6 +2,12 @@
 
 This document is for AI agents (Codex/Claude/Cursor/CI bots) that call `vibeart-cli` non-interactively.
 
+## Links
+
+- Website: https://vibeart.app
+- GitHub: https://github.com/pyth0nb3st/vibeart-cli
+- npm: https://www.npmjs.com/package/vibeart-cli
+
 ## Goals
 
 - Deterministic command execution
