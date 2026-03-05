@@ -2,6 +2,8 @@
 
 Standalone CLI wrapper for Vibeart MCP API, built with `incur`.
 
+Agent-focused guide: [README.agent.md](./README.agent.md)
+
 ## Install
 
 ```bash
