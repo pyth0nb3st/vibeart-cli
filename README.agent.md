@@ -71,9 +71,14 @@ vibeart models list --format json
 ## Command Map (CLI -> MCP Tool)
 
 - `vibeart models list` -> `list_models`
+- `vibeart models list-edit` -> `list_edit_models`
+- `vibeart models list-video` -> `list_video_models`
 - `vibeart sessions list` -> `list_sessions`
 - `vibeart sessions get <sessionId>` -> `get_session`
 - `vibeart sessions create [name] --project-id <id>` -> `create_session`
+- `vibeart sessions merge --source-session-ids <id1,id2,...> [--layout grid|horizontal|vertical]` -> `merge_sessions`
+- `vibeart sessions protect <sessionId>` -> `protect_session`
+- `vibeart sessions unprotect <sessionId>` -> `unprotect_session`
 - `vibeart projects list` -> `list_projects`
 - `vibeart projects get <projectId>` -> `get_project`
 - `vibeart projects create --name <name> [--description <text>]` -> `create_project`
@@ -81,6 +86,13 @@ vibeart models list --format json
 - `vibeart images generate --session-id <id> --prompt <text> ...` -> `generate_images`
 - `vibeart images edit --session-id <id> --prompt <text> --image-urls <u1,u2,...> ...` -> `edit_images`
 - `vibeart video generate --session-id <id> --prompt <text> ...` -> `generate_video`
+- `vibeart background list-providers` -> `list_background_providers`
+- `vibeart background remove --image-url <url> [--provider <provider>]` -> `remove_background`
+- `vibeart background batch-remove --image-urls <u1,u2,...> [--provider <provider>]` -> `batch_remove_background`
+- `vibeart text create --session-id <id> --text-content <text> ...` -> `create_text_node`
+- `vibeart text update --session-id <id> --item-id <id> ...` -> `update_text_node`
+- `vibeart embeds create --session-id <id> --url <url> ...` -> `create_embed_node`
+- `vibeart credits balance` -> `get_balance`
 
 ## Common Agent Flows
 

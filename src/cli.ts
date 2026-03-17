@@ -9,6 +9,10 @@ import { createSessionsCommandGroup } from './commands/sessions'
 import { createProjectsCommandGroup } from './commands/projects'
 import { createImagesCommandGroup } from './commands/images'
 import { createVideoCommandGroup } from './commands/video'
+import { createBackgroundCommandGroup } from './commands/background'
+import { createTextCommandGroup } from './commands/text'
+import { createEmbedsCommandGroup } from './commands/embeds'
+import { createCreditsCommandGroup } from './commands/credits'
 
 function resolveCliVersion(): string {
   try {
@@ -43,4 +47,8 @@ Cli.create('vibeart', {
   .command(createProjectsCommandGroup())
   .command(createImagesCommandGroup())
   .command(createVideoCommandGroup())
+  .command(createBackgroundCommandGroup())
+  .command(createTextCommandGroup())
+  .command(createEmbedsCommandGroup())
+  .command(createCreditsCommandGroup())
   .serve()
