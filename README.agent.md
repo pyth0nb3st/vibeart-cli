@@ -73,6 +73,7 @@ vibeart models list --format json
 - `vibeart models list` -> `list_models`
 - `vibeart models list-edit` -> `list_edit_models`
 - `vibeart models list-video` -> `list_video_models`
+- `vibeart models list-tts` -> `list_tts_models`
 - `vibeart sessions list` -> `list_sessions`
 - `vibeart sessions get <sessionId>` -> `get_session`
 - `vibeart sessions create [name] --project-id <id>` -> `create_session`
@@ -86,6 +87,10 @@ vibeart models list --format json
 - `vibeart images generate --session-id <id> --prompt <text> ...` -> `generate_images`
 - `vibeart images edit --session-id <id> --prompt <text> --image-urls <u1,u2,...> ...` -> `edit_images`
 - `vibeart video generate --session-id <id> --prompt <text> ...` -> `generate_video`
+- `vibeart media upload --session-id <id> --source <url-or-data-uri> ...` -> `upload_media`
+- `vibeart audio list-voices [--provider qwen|elevenlabs|all]` -> `list_tts_voices`
+- `vibeart audio speech --session-id <id> --text <text> ...` -> `generate_speech`
+- `vibeart audio dialogue --session-id <id> --inputs '[{"text":"Hello","voiceId":"Vivian"}]' ...` -> `generate_dialogue`
 - `vibeart background list-providers` -> `list_background_providers`
 - `vibeart background remove --image-url <url> [--provider <provider>]` -> `remove_background`
 - `vibeart background batch-remove --image-urls <u1,u2,...> [--provider <provider>]` -> `batch_remove_background`
@@ -137,6 +142,17 @@ Suggested retry policy:
 - Never hardcode API keys in prompts/scripts checked into git.
 - Prefer env vars over CLI flags in shared logs (flags can appear in process args/history).
 - Do not print full API keys; only masked values are safe for logs.
+
+## Dependency Safety
+
+Run before publishing or release smoke tests:
+
+```bash
+npm run security:audit
+```
+
+Use npm `>=11.10.0` so project `.npmrc` can enforce the 7-day `min-release-age`
+cooldown for newly published packages.
 
 ## Agent Discovery
 

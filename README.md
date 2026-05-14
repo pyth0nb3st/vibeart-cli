@@ -47,6 +47,7 @@ vibeart auth status --format json
 
 ```bash
 vibeart models list --format json
+vibeart models list-tts --format json
 vibeart sessions list --format json
 vibeart images generate --session-id <id> --prompt "A cinematic portrait" --format json
 ```
@@ -83,3 +84,13 @@ For both base URL and API key:
 - `vibeart projects list|get|create|move-session`
 - `vibeart images generate|edit`
 - `vibeart video generate`
+- `vibeart media upload`
+- `vibeart audio list-voices|speech|dialogue`
+
+## Security Checks
+
+```bash
+npm run security:audit
+```
+
+This runs advisory checks plus npm registry signature/provenance verification.

@@ -13,6 +13,8 @@ import { createBackgroundCommandGroup } from './commands/background'
 import { createTextCommandGroup } from './commands/text'
 import { createEmbedsCommandGroup } from './commands/embeds'
 import { createCreditsCommandGroup } from './commands/credits'
+import { createMediaCommandGroup } from './commands/media'
+import { createAudioCommandGroup } from './commands/audio'
 
 function resolveCliVersion(): string {
   try {
@@ -51,4 +53,6 @@ Cli.create('vibeart', {
   .command(createTextCommandGroup())
   .command(createEmbedsCommandGroup())
   .command(createCreditsCommandGroup())
+  .command(createMediaCommandGroup())
+  .command(createAudioCommandGroup())
   .serve()

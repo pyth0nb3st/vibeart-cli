@@ -1,6 +1,17 @@
 import { Cli, z } from 'incur'
 import { connectionOptionsSchema, executeTool, toToolError } from './common'
 
+function splitUrls(value?: string): string[] | undefined {
+  if (!value) return undefined
+
+  const urls = value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean)
+
+  return urls.length > 0 ? urls : undefined
+}
+
 export function createVideoCommandGroup() {
   return Cli.create('video', {
     description: 'Video generation commands.',
@@ -15,9 +26,18 @@ export function createVideoCommandGroup() {
       resolution: z.string().optional().describe('Output resolution.'),
       aspectRatio: z.string().optional().describe('Aspect ratio.'),
       sourceImageUrl: z.string().optional().describe('Optional source image URL.'),
+      lastFrameUrl: z.string().optional().describe('Last frame URL for frame-interpolation mode.'),
+      sourceVideoUrl: z.string().optional().describe('Source video URL for video-extension mode.'),
+      referenceImageUrls: z.string().optional().describe('Comma-separated reference image URLs for reference-to-video mode.'),
+      referenceVideoUrls: z.string().optional().describe('Comma-separated reference video URLs for reference-to-video mode.'),
+      referenceAudioUrls: z.string().optional().describe('Comma-separated reference audio URLs for reference-to-video mode.'),
     }),
     async run(c) {
       try {
+        const referenceImageUrls = splitUrls(c.options.referenceImageUrls)
+        const referenceVideoUrls = splitUrls(c.options.referenceVideoUrls)
+        const referenceAudioUrls = splitUrls(c.options.referenceAudioUrls)
+
         const result = await executeTool({
           toolName: 'generate_video',
           options: c.options,
@@ -30,6 +50,11 @@ export function createVideoCommandGroup() {
             ...(c.options.resolution ? { resolution: c.options.resolution } : {}),
             ...(c.options.aspectRatio ? { aspectRatio: c.options.aspectRatio } : {}),
             ...(c.options.sourceImageUrl ? { sourceImageUrl: c.options.sourceImageUrl } : {}),
+            ...(c.options.lastFrameUrl ? { lastFrameUrl: c.options.lastFrameUrl } : {}),
+            ...(c.options.sourceVideoUrl ? { sourceVideoUrl: c.options.sourceVideoUrl } : {}),
+            ...(referenceImageUrls ? { referenceImageUrls } : {}),
+            ...(referenceVideoUrls ? { referenceVideoUrls } : {}),
+            ...(referenceAudioUrls ? { referenceAudioUrls } : {}),
           },
         })
 

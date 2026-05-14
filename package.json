@@ -1,8 +1,9 @@
 {
   "name": "vibeart-cli",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "private": false,
   "type": "module",
+  "packageManager": "npm@11.14.1",
   "homepage": "https://vibeart.app",
   "repository": {
     "type": "git",
@@ -15,7 +16,8 @@
     "dist",
     "README.md",
     "README.agent.md",
-    ".env.example"
+    ".env.example",
+    "npm-shrinkwrap.json"
   ],
   "bin": {
     "vibeart": "dist/cli.js"
@@ -24,10 +26,12 @@
     "build": "tsup src/cli.ts --format esm --dts --sourcemap --clean --out-dir dist",
     "test": "vitest run",
     "dev": "tsx src/cli.ts",
-    "smoke:release": "bash scripts/smoke-release.sh"
+    "smoke:release": "bash scripts/smoke-release.sh",
+    "security:audit": "npm audit --audit-level=moderate && npm audit signatures"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=20",
+    "npm": ">=11.10.0"
   },
   "dependencies": {
     "incur": "^0.2.0",

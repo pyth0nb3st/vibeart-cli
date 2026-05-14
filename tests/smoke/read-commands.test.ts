@@ -102,6 +102,52 @@ describe('read commands', () => {
     expect(server.calls).toContain('list_models')
   })
 
+  it('models list-tts maps to list_tts_models', async () => {
+    const server = await startMockMcpServer({
+      list_tts_models: { models: [{ id: 'elevenlabs-v3' }] },
+    })
+    runningServers.push(server)
+
+    const { stdout } = await execa('tsx', [
+      'src/cli.ts',
+      'models',
+      'list-tts',
+      '--base-url',
+      server.baseUrl,
+      '--api-key',
+      'vk_test',
+      '--format',
+      'json',
+    ])
+
+    expect(JSON.parse(stdout)).toEqual({ models: [{ id: 'elevenlabs-v3' }] })
+    expect(server.calls).toContain('list_tts_models')
+  })
+
+  it('audio list-voices maps to list_tts_voices', async () => {
+    const server = await startMockMcpServer({
+      list_tts_voices: { voices: [{ voiceId: 'Vivian' }] },
+    })
+    runningServers.push(server)
+
+    const { stdout } = await execa('tsx', [
+      'src/cli.ts',
+      'audio',
+      'list-voices',
+      '--provider',
+      'qwen',
+      '--base-url',
+      server.baseUrl,
+      '--api-key',
+      'vk_test',
+      '--format',
+      'json',
+    ])
+
+    expect(JSON.parse(stdout)).toEqual({ voices: [{ voiceId: 'Vivian' }] })
+    expect(server.calls).toContain('list_tts_voices')
+  })
+
   it('sessions list maps to list_sessions', async () => {
     const server = await startMockMcpServer({
       list_sessions: [{ id: 's1' }],

@@ -256,6 +256,12 @@ describe('write commands', () => {
       'A drone flythrough',
       '--duration',
       '5',
+      '--mode',
+      'reference-to-video',
+      '--reference-image-urls',
+      'https://img-1,https://img-2',
+      '--reference-audio-urls',
+      'https://audio-1',
       '--base-url',
       server.baseUrl,
       '--api-key',
@@ -270,7 +276,134 @@ describe('write commands', () => {
       args: {
         sessionId: 's1',
         prompt: 'A drone flythrough',
+        mode: 'reference-to-video',
         duration: 5,
+        referenceImageUrls: ['https://img-1', 'https://img-2'],
+        referenceAudioUrls: ['https://audio-1'],
+      },
+    })
+  })
+
+  it('media upload maps to upload_media', async () => {
+    const server = await startMockMcpServer({
+      upload_media: { item: { id: 'u1' } },
+    })
+    runningServers.push(server)
+
+    const { stdout } = await execa('tsx', [
+      'src/cli.ts',
+      'media',
+      'upload',
+      '--session-id',
+      's1',
+      '--source',
+      'https://example.com/image.png',
+      '--filename',
+      'image.png',
+      '--label',
+      'Reference',
+      '--x',
+      '10',
+      '--y',
+      '20',
+      '--base-url',
+      server.baseUrl,
+      '--api-key',
+      'vk_test',
+      '--format',
+      'json',
+    ])
+
+    expect(JSON.parse(stdout)).toEqual({ item: { id: 'u1' } })
+    expect(server.calls[0]).toEqual({
+      name: 'upload_media',
+      args: {
+        sessionId: 's1',
+        source: 'https://example.com/image.png',
+        filename: 'image.png',
+        label: 'Reference',
+        position: { x: 10, y: 20 },
+      },
+    })
+  })
+
+  it('audio speech maps to generate_speech', async () => {
+    const server = await startMockMcpServer({
+      generate_speech: { audio: { id: 'a1' } },
+    })
+    runningServers.push(server)
+
+    const { stdout } = await execa('tsx', [
+      'src/cli.ts',
+      'audio',
+      'speech',
+      '--session-id',
+      's1',
+      '--text',
+      'Hello world',
+      '--voice-id',
+      'Vivian',
+      '--model',
+      'qwen-3-tts-0.6b',
+      '--with-timestamps',
+      '--base-url',
+      server.baseUrl,
+      '--api-key',
+      'vk_test',
+      '--format',
+      'json',
+    ])
+
+    expect(JSON.parse(stdout)).toEqual({ audio: { id: 'a1' } })
+    expect(server.calls[0]).toEqual({
+      name: 'generate_speech',
+      args: {
+        sessionId: 's1',
+        text: 'Hello world',
+        voiceId: 'Vivian',
+        model: 'qwen-3-tts-0.6b',
+        withTimestamps: true,
+      },
+    })
+  })
+
+  it('audio dialogue maps to generate_dialogue', async () => {
+    const server = await startMockMcpServer({
+      generate_dialogue: { audio: { id: 'd1' } },
+    })
+    runningServers.push(server)
+
+    const { stdout } = await execa('tsx', [
+      'src/cli.ts',
+      'audio',
+      'dialogue',
+      '--session-id',
+      's1',
+      '--inputs',
+      '[{"text":"Hi","voiceId":"voice_a"},{"text":"Hello","voiceId":"voice_b"}]',
+      '--model',
+      'eleven_v3',
+      '--label',
+      'Two speakers',
+      '--base-url',
+      server.baseUrl,
+      '--api-key',
+      'vk_test',
+      '--format',
+      'json',
+    ])
+
+    expect(JSON.parse(stdout)).toEqual({ audio: { id: 'd1' } })
+    expect(server.calls[0]).toEqual({
+      name: 'generate_dialogue',
+      args: {
+        sessionId: 's1',
+        inputs: [
+          { text: 'Hi', voiceId: 'voice_a' },
+          { text: 'Hello', voiceId: 'voice_b' },
+        ],
+        model: 'eleven_v3',
+        label: 'Two speakers',
       },
     })
   })

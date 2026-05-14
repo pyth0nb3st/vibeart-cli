@@ -53,4 +53,20 @@ export function createModelsCommandGroup() {
         }
       },
     })
+    .command('list-tts', {
+      description: 'List available text-to-speech models.',
+      options: connectionOptionsSchema,
+      async run(c) {
+        try {
+          const result = await executeTool({
+            toolName: 'list_tts_models',
+            options: c.options,
+          })
+
+          return c.ok(result)
+        } catch (error) {
+          return c.error(toToolError(error))
+        }
+      },
+    })
 }
